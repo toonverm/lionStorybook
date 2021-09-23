@@ -1,0 +1,28 @@
+{
+  "name": "@atoms/listbox",
+  "version": "0.3.9",
+  "description": "Listbox",
+  "license": "MIT",
+  "private": false,
+  "main": "index.js",
+  "module": "index.js",
+  "files": [
+    "*.d.ts",
+    "*.js",
+    "docs",
+    "src",
+    "test",
+    "test-helpers",
+    "translations",
+    "types"
+  ],
+  "dependencies": {
+    "@lion/listbox": "^0.10.5",
+    "@lion/core": "^0.18.2",
+    "@lion/helpers":"^0.9.3"
+  },
+  "keywords": [
+    "listbox",
+    "web-components"
+  ]
+}
