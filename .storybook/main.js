@@ -1,5 +1,12 @@
 const fs = require('fs');
 const path = require('path');
+const babel = require("@rollup/plugin-babel");
+const {DEFAULT_EXTENSIONS} = require("@babel/core");
+const {Plugin} = require("rollup");
+
+const prebuiltDir = require
+  .resolve('@web/storybook-prebuilt/package.json')
+  .replace('/package.json', '');
 
 module.exports = {
   stories: [
@@ -9,51 +16,24 @@ module.exports = {
     '../README.md',
     '../packages/!(ajax)*/README.md',
   ],
-  addons: [
-  ],
+  addons: [],
   esDevServer: {
     nodeResolve: true,
     watch: true,
     open: true,
   },
-  rollup: config => {
-    // temporarily hard copy all needed global files as all tested rollup plugins flatten the
-    // directory structure
-    // `rollup-plugin-copy` might work if issue 37 is resolved
-    // https://github.com/vladshcherbin/rollup-plugin-copy/issues/37
-    config.plugins.push({
-      generateBundle() {
-/*        this.emitFile({
-          type: 'asset',
-          fileName: 'packages/form-integrations/dev-assets/FormatMixinDiagram-1.svg',
-          source: fs.readFileSync(
-            path.join(
-              __dirname,
-              '../packages/form-integrations/dev-assets/FormatMixinDiagram-1.svg',
-            ),
-          ),
-        });
-        this.emitFile({
-          type: 'asset',
-          fileName: 'packages/form-integrations/dev-assets/FormatMixinDiagram-2.svg',
-          source: fs.readFileSync(
-            path.join(
-              __dirname,
-              '../packages/form-integrations/dev-assets/FormatMixinDiagram-2.svg',
-            ),
-          ),
-        });
-        this.emitFile({
-          type: 'asset',
-          fileName: 'packages/form-integrations/dev-assets/FormatMixinDiagram-3.svg',
-          source: fs.readFileSync(
-            path.join(
-              __dirname,
-              '../packages/form-integrations/dev-assets/FormatMixinDiagram-3.svg',
-            ),
-          ),
-        });*/
-      },
-    });
+  rollupConfig(config) {
+    config.plugins.filter(t => t.name === 'babel')[0].targets = [
+      'last 3 Chrome major versions',
+      'last 3 ChromeAndroid major versions',
+      'last 3 Firefox major versions',
+      'last 3 Edge major versions',
+      'last 3 Safari major versions',
+      'last 3 iOS major versions',
+    ];
+
+    config.output.format = 'es';
+
+    return config;
   },
 };
